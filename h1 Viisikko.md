@@ -1,4 +1,6 @@
-# Tiivistelmä
+# 1. Hello Salt
+
+## x)
 
 - Salt asennus Debianiin
 - Salt-komentojen suoritus paikallisesti
