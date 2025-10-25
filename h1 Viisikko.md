@@ -12,6 +12,7 @@ b)
   Asennettu Salt Linuxille
   Kun yrittää manuaaliasesti täyttää lokaalista salt-komentoa salt-call eteenpäin tab-painikkeella, tapahtuu loop-virhe
   Sen voi ohittaa copy pastella tai käyttämättä tab-painiketta
+  <img width="865" height="77" alt="error" src="https://github.com/user-attachments/assets/bc9af864-86ea-400f-87b7-0858b80f35a4" />
   Salt asennettu Debianiin
 
 c)
