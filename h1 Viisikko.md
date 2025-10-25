@@ -4,10 +4,8 @@
 - Salt-komentojen suoritus paikallisesti
 - Nopea ohje Salt orjista ja mastereista
 - Ohjeita raportin kirjoittamiseen
-  
-## Raportti
 
-### b)
+## b)
 
   Asennettu Salt Linuxille
   
@@ -19,7 +17,7 @@
   
   Salt asennettu Debianiin
 
-### c)
+## c)
 
   pkg.installed - Tarkistaa onko sovellusta asennettu
 
@@ -31,7 +29,7 @@
   
   cmd.run - Sovelluksen suoritus
 
-### d)
+## d)
 
   Kun pkg.installed tree komentoa ajettiin, se tarkisti onko tree asennettu. Jos se on asennettu niin ei tehty mitään muutoksia, toisin jos tree on 'absent' eli ei asennettu niin siihen tehtiin muutoksia (asennus).
 
