@@ -7,12 +7,14 @@
   
 ## Raportti
 
-b)Asennettu Salt Linuxille
+b)
+  Asennettu Salt Linuxille
   Kun yrittää manuaaliasesti täyttää lokaalista salt-komentoa salt-call eteenpäin tab-painikkeella, tapahtuu loop-virhe
   Sen voi ohittaa copy pastella tai käyttämättä tab-painiketta
   Salt asennettu Debianiin
 
-c)pkg.installed - Tarkistaa onko sovellusta asennettu
+c)
+  pkg.installed - Tarkistaa onko sovellusta asennettu
 
   file.managed - Tiedoston tai kansion tarkistus
   
@@ -22,7 +24,8 @@ c)pkg.installed - Tarkistaa onko sovellusta asennettu
   
   cmd.run - Sovelluksen suoritus
 
-d)Kun pkg.installed tree komentoa ajettiin, se tarkisti onko tree asennettu. Jos se on asennettu niin ei tehty mitään muutoksia, toisin jos tree on 'absent' eli ei asennettu niin siihen tehtiin muutoksia (asennus).
+d)
+  Kun pkg.installed tree komentoa ajettiin, se tarkisti onko tree asennettu. Jos se on asennettu niin ei tehty mitään muutoksia, toisin jos tree on 'absent' eli ei asennettu niin siihen tehtiin muutoksia (asennus).
 
   Tulokset kun komentoa ajettiin ja siihen ei tehty muutoksia:
 
