@@ -27,6 +27,7 @@ c)
   cmd.run - Sovelluksen suoritus
 
 d)
+
   Kun pkg.installed tree komentoa ajettiin, se tarkisti onko tree asennettu. Jos se on asennettu niin ei tehty mitään muutoksia, toisin jos tree on 'absent' eli ei asennettu niin siihen tehtiin muutoksia (asennus).
 
   Tulokset kun komentoa ajettiin ja siihen ei tehty muutoksia:
