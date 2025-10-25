@@ -7,7 +7,7 @@
   
 ## Raportti
 
-b)
+### b)
 
   Asennettu Salt Linuxille
   
@@ -19,7 +19,7 @@ b)
   
   Salt asennettu Debianiin
 
-c)
+### c)
 
   pkg.installed - Tarkistaa onko sovellusta asennettu
 
@@ -31,7 +31,7 @@ c)
   
   cmd.run - Sovelluksen suoritus
 
-d)
+### d)
 
   Kun pkg.installed tree komentoa ajettiin, se tarkisti onko tree asennettu. Jos se on asennettu niin ei tehty mitään muutoksia, toisin jos tree on 'absent' eli ei asennettu niin siihen tehtiin muutoksia (asennus).
 
