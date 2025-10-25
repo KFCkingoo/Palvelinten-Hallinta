@@ -13,9 +13,13 @@ b)Asennettu Salt Linuxille
   Salt asennettu Debianiin
 
 c)pkg.installed - Tarkistaa onko sovellusta asennettu
+
   file.managed - Tiedoston tai kansion tarkistus
+  
   service.running - Palvelun käynnissäolo tarkistus
+  
   user.present - Käyttäjän tarkistus
+  
   cmd.run - Sovelluksen suoritus
 
 d)Kun pkg.installed tree komentoa ajettiin, se tarkisti onko tree asennettu. Jos se on asennettu niin ei tehty mitään muutoksia, toisin jos tree on 'absent' eli ei asennettu niin siihen tehtiin muutoksia (asennus).
@@ -41,4 +45,4 @@ Failed:    0
   
 ## Lähteet
 
-Karvinen, Tero 2021. Run Salt Command Locally. https://terokarvinen.com/2021/salt-run-command-locally/
+Karvinen, Tero 2021. Run Salt Command Locally. https://terokarvinen.com/2021/salt-run-command-locally/.
