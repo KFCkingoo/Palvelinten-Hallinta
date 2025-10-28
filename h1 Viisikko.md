@@ -29,6 +29,8 @@
 
   <img width="809" height="180" alt="Näyttökuva (28)" src="https://github.com/user-attachments/assets/40db8e43-6822-4263-8bda-e7e7d9f76c85" />
 
+  
+  
   Testattu toimivuus:
  
   local:
