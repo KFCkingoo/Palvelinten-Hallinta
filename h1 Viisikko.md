@@ -31,7 +31,7 @@
 
   
   
-  Testattu toimivuus komennolla $ sudo salt-call --local state.single file.managed /tmp/hellotero:
+  Testattu toimivuus komennolla ```sudo salt-call --local state.single file.managed /tmp/hellotero```:
  
   local:
 ----------
@@ -53,7 +53,7 @@ Failed:    0
   
 ## c)
 
-  Tarkistettu, että sovellus on asennettu käyttämällä pkg.installed tilafunktiota. Komentona $ sudo salt-call --local -l info state.single pkg.installed tree:
+  Tarkistettu, että sovellus on asennettu käyttämällä pkg.installed tilafunktiota. Komentona ``sudo salt-call --local -l info state.single pkg.installed tree``:
 
   local:
 ----------
@@ -80,7 +80,7 @@ Failed:    0
   Koska tree sovellus oli absent tilassa, se asennettiin
   
 
-  Testattu file.managed tilafunktiota komenolla $ sudo salt-call --local -l info state.single file.managed /tmp/hellochoy:
+  Testattu file.managed tilafunktiota komenolla ``sudo salt-call --local -l info state.single file.managed /tmp/hellochoy``:
 
   local:
 ----------
@@ -104,7 +104,7 @@ Failed:    0
   Koska tiedostoa ei ollut olemassa, komento teki uuden tiedoston
   
 
-  Testattu service.running tilafunktiota apache2 palvelulla komennolla $ sudo salt-call --local -l info state.single service.running apache2 enable=True:
+  Testattu service.running tilafunktiota apache2 palvelulla komennolla ``sudo salt-call --local -l info state.single service.running apache2 enable=True``:
 
   local:
 ----------
@@ -128,7 +128,7 @@ Failed:    0
   Palvelu apache2 on asennettu, joten palvelua suoritetaan
   
 
-  Testattu user.present tilafunktiota, tarkistettu käyttäjää choykkeli komennolla $ sudo salt-call --local -l info state.single user.present choykkeli:
+  Testattu user.present tilafunktiota, tarkistettu käyttäjää choykkeli komennolla ``sudo salt-call --local -l info state.single user.present choykkeli``:
 
   local:
 ----------
@@ -169,7 +169,7 @@ Failed:    0
   Ko. käyttäjää ei ollut olemassa, joten komento loi käyttäjän
   
 
-  Testattu cmd.run tilafunktiota, sovelluksen suoritusta komennolla $ sudo salt-call --local -l info state.single cmd.run 'touch /tmp/foo':
+  Testattu cmd.run tilafunktiota, sovelluksen suoritusta komennolla ``sudo salt-call --local -l info state.single cmd.run 'touch /tmp/foo'``:
 
   local:
 ----------
@@ -197,7 +197,7 @@ Failed:    0
   Sovellusta suoritettiin
   
 
-  Testattu idempotentti creates komennolla $ sudo salt-call --local -l info state.single cmd.run 'touch /tmp/foo' creates="/tmp/foo":
+  Testattu idempotentti creates komennolla ``sudo salt-call --local -l info state.single cmd.run 'touch /tmp/foo' creates="/tmp/foo"``:
 
   local:
 ----------
@@ -218,7 +218,7 @@ Failed:    0
   Tiedosto oli olemassa, ei muutoksia tehty
   
   
-  Testattu idempotentti myös file.managed tilafunktiolla komennolla $ sudo salt-call --local -l info state.single file.managed /tmp/foo:
+  Testattu idempotentti myös file.managed tilafunktiolla komennolla ``sudo salt-call --local -l info state.single file.managed /tmp/foo``:
 
   local:
 ----------
@@ -240,9 +240,9 @@ Failed:    0
 
 ## d)
 
-  Kun pkg.installed tree komentoa ajettiin komennolla $ sudo salt-call --local -l info state.single pkg.installed tree, se tarkisti onko tree asennettu. Jos se on asennettu niin ei tehty mitään muutoksia, toisin jos tree on 'absent' eli ei asennettu niin siihen tehtiin muutoksia (asennus).
+  Kun pkg.installed tree komentoa ajettiin komennolla ``sudo salt-call --local -l info state.single pkg.installed tree``, se tarkisti onko tree asennettu. Jos se on asennettu niin ei tehty mitään muutoksia, toisin jos tree on 'absent' eli ei asennettu niin siihen tehtiin muutoksia (asennus).
 
-  Ajettiin pkg.installed tree komentoa paikallisesti komennolla $ sudo salt-call --local -l info state.single pkg.installed tree:
+  Ajettiin pkg.installed tree komentoa paikallisesti komennolla ``sudo salt-call --local -l info state.single pkg.installed tree``:
 
   local:
 ----------
