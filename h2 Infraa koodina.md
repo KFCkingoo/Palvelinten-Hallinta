@@ -2,6 +2,8 @@
 
 ## x)
 - 'hello' moduulin luonti ja testaus
+- YAML struktuuri
+- Top tiedoston avulla suoritetaan useita muutoksia ja moduuleja
 
 ## a)
 
