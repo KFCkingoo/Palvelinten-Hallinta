@@ -11,7 +11,7 @@ Tämä raportti on luotu Tero Karvisen Palvelinten Hallinta-kurssia varten.
 
 Otettiin käyttöön micro editori ``sudo apt-get -y install micro`` + ``export EDITOR=micro``.
 
-Tehtiin kansio 'hello' moduulille ``sudo mkdir -p /srv/salt/hello/``.
+Luotiin kansio 'hello' moduulille ``sudo mkdir -p /srv/salt/hello/``.
 
 On tärkeää luoda tiedostot oikeille hakemistolle, joten suunnattiin kyseiseen hakemistoon ``cd /srv/salt/hello/``.
 
@@ -42,7 +42,7 @@ Failed:    0
 
 Tiedosto oli olemassa, joten ei muutoksia tehty.
 
-Testattiin, että hello moduuli toimii oikein toisella tavalla ``ls /tmp/hellochoy``:
+Testattiin, että 'hello' moduuli toimii oikein toisella tavalla ``ls /tmp/hellochoy``:
 
 ``/tmp/hellochoy``
 
@@ -50,7 +50,7 @@ Moduuli toimi.
 
 ## b)
 
-Tehtiin top.sls tiedosto ``sudoedit top.sls`` ja lisättiin:
+Luotiin top.sls tiedosto Master hakemistoon ``sudoedit top.sls`` ja lisättiin:
 
 ```
 base:
@@ -76,7 +76,7 @@ Succeeded: 1
 Failed:    0
 ------------
 
-top.sls toimi, mutta sinä hetkellä tehtäviä oli vain 1 moduuli luotu. Seuraavissa tehtävissä tuli luotua lisää tilafunktioita.
+Testi toimi oikein, mutta sinä hetkenä oli vain 1 moduuli luotu. Seuraavissa tehtävissä tuli luotua lisää tilafunktioita.
 
 ## c)
 
@@ -325,7 +325,7 @@ Failed:    0
 
 'hellomulti' moduuli toimi oikein eikä tehnyt muutoksia, testattu useamman kerran ennen muiden moduulien testausta ja jälkeen.
 
-Meillä oli tehty aikaisemmin myös top.sls tiedosto, joten hyödynnettiin tiedosta käyttämällä sitä. Mentiin oikeaan hakemistoon ``cd /srv/salt/`` ja lisättiin tilafunktiot top.sls tiedostoon:
+Meillä oli tehty aikaisemmin myös top.sls tiedosto, joten hyödynnettiin tiedostoa. Mentiin oikeaan hakemistoon ``cd /srv/salt/`` ja lisättiin moduulit top.sls tiedostoon:
 
 ```
 base:
@@ -443,6 +443,8 @@ Testi ei tehnyt muutoksia, joten 'hellomulti' ja muut moduulit ovat idempotentte
 ## Lähteet
 
 Karvinen, Tero 2024. https://terokarvinen.com/2024/hello-salt-infra-as-code/
+
 Salt Project 2025. Salt overview - Salt user guide. https://docs.saltproject.io/salt/user-guide/en/latest/topics/overview.html#rules-of-yaml
+
 Salt Project 2025. The Top File. https://docs.saltproject.io/en/latest/ref/states/top.html
 
