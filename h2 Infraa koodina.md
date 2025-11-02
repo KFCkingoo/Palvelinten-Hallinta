@@ -192,7 +192,7 @@ Failed:    0
 
 Moduuli toimi oikein. Käyttäjä oli olemassa.
 
-Luotiin 'helloucmd' kansio ``sudo mkdir hellocmd`` ja kansioon luotiin init.sls tiedosto ``sudoedit init.sls``, tiedostoon lisättiin:
+Luotiin 'hellocmd' kansio ``sudo mkdir hellocmd`` ja kansioon luotiin init.sls tiedosto ``sudoedit init.sls``, tiedostoon lisättiin:
 
 ```
 /tmp/hellochoy:
@@ -222,6 +222,223 @@ Failed:    0
 Moduuli toimi oikein. Moduuli yritti luoda tiedoston, mutta se oli jo olemassa, joten se ohitti muutoksen.
 
 ## d)
+
+Luotiin 'hellomulti' kansio ``sudo mkdir hellomulti`` ja kansioon luotiin init.sls tiedosto ``sudoedit init.sls``, tiedostoon lisättiin:
+
+```
+base:
+  pkg.installed:
+    - name: tree
+  file.managed:
+    - name: /tmp/hellochoy
+```
+
+local:
+----------
+          ID: base
+    Function: pkg.installed
+        Name: tree
+      Result: True
+     Comment: All specified packages are already installed
+     Started: 21:20:11.002869
+    Duration: 76.28 ms
+     Changes:   
+----------
+          ID: base
+    Function: file.managed
+        Name: /tmp/hellochoy
+      Result: True
+     Comment: File /tmp/hellochoy exists with proper permissions. No changes made.
+     Started: 21:20:11.080164
+    Duration: 1.236 ms
+     Changes:   
+
+Summary for local
+------------
+Succeeded: 2
+Failed:    0
+------------
+
+Moduuli toimi oikein, eikä tehnyt mitään muutoksia. Testattiin 'hellopkg' moduulilla, että ne ovat idempotentteja ``sudo salt-call --local state.apply hellopkg``:
+
+local:
+----------
+          ID: tree
+    Function: pkg.installed
+      Result: True
+     Comment: All specified packages are already installed
+     Started: 21:26:07.589898
+    Duration: 76.376 ms
+     Changes:   
+
+Summary for local
+------------
+Succeeded: 1
+Failed:    0
+------------
+
+Moduuli ei tehnyt muutoksia. Seuraavaksi testattiin 'hellofile' moduulilla ``sudo salt-call --local state.apply hellofile``:
+
+local:
+----------
+          ID: /tmp/hellochoy
+    Function: file.managed
+      Result: True
+     Comment: File /tmp/hellochoy exists with proper permissions. No changes made.
+     Started: 21:29:42.216106
+    Duration: 5.859 ms
+     Changes:   
+
+Summary for local
+------------
+Succeeded: 1
+Failed:    0
+------------
+
+Moduuli ei tehnyt muutoksia. Testattiin 'hellomulti' moduulia uudelleen ``sudo salt-call --local state.apply hellomulti``:
+
+local:
+----------
+          ID: base
+    Function: pkg.installed
+        Name: tree
+      Result: True
+     Comment: All specified packages are already installed
+     Started: 21:30:58.290034
+    Duration: 74.741 ms
+     Changes:   
+----------
+          ID: base
+    Function: file.managed
+        Name: /tmp/hellochoy
+      Result: True
+     Comment: File /tmp/hellochoy exists with proper permissions. No changes made.
+     Started: 21:30:58.365729
+    Duration: 1.213 ms
+     Changes:   
+
+Summary for local
+------------
+Succeeded: 2
+Failed:    0
+------------
+
+'hellomulti' moduuli toimi oikein eikä tehnyt muutoksia, testattu useamman kerran ennen muiden moduulien testausta ja jälkeen.
+
+Meillä oli tehty aikaisemmin myös top.sls tiedosto, joten hyödynnettiin tiedosta käyttämällä sitä. Mentiin oikeaan hakemistoon ``cd /srv/salt/`` ja lisättiin tilafunktiot top.sls tiedostoon:
+
+```
+base:
+  '*':
+    -hellopkg
+    -hellofile
+    -hellosrv
+    -hellouser
+```
+
+Testattu top.sls tiedosto ``sudo salt-call --local state.apply``:
+
+local:
+----------
+          ID: tree
+    Function: pkg.installed
+      Result: True
+     Comment: All specified packages are already installed
+     Started: 21:35:01.115025
+    Duration: 75.94 ms
+     Changes:   
+----------
+          ID: /tmp/hellochoy
+    Function: file.managed
+      Result: True
+     Comment: File /tmp/hellochoy exists with proper permissions. No changes made.
+     Started: 21:35:01.191964
+    Duration: 1.204 ms
+     Changes:   
+----------
+          ID: apache2
+    Function: service.running
+      Result: True
+     Comment: The service apache2 is already running
+     Started: 21:35:01.193667
+    Duration: 45.275 ms
+     Changes:   
+----------
+          ID: choykkeli
+    Function: user.present
+      Result: True
+     Comment: User choykkeli is present and up to date
+     Started: 21:35:01.239526
+    Duration: 1.277 ms
+     Changes:   
+
+Summary for local
+------------
+Succeeded: 4
+Failed:    0
+------------
+
+Muutoksia ei tehty. Lisättiin 'hellomulti' moduuli top.sls tiedostoon ja testattiin uudelleen ``sudo salt-call --local state.apply``:
+
+local:
+----------
+          ID: tree
+    Function: pkg.installed
+      Result: True
+     Comment: All specified packages are already installed
+     Started: 21:37:50.550652
+    Duration: 75.985 ms
+     Changes:   
+----------
+          ID: /tmp/hellochoy
+    Function: file.managed
+      Result: True
+     Comment: File /tmp/hellochoy exists with proper permissions. No changes made.
+     Started: 21:37:50.627636
+    Duration: 1.238 ms
+     Changes:   
+----------
+          ID: apache2
+    Function: service.running
+      Result: True
+     Comment: The service apache2 is already running
+     Started: 21:37:50.629368
+    Duration: 44.442 ms
+     Changes:   
+----------
+          ID: choykkeli
+    Function: user.present
+      Result: True
+     Comment: User choykkeli is present and up to date
+     Started: 21:37:50.674523
+    Duration: 1.334 ms
+     Changes:   
+----------
+          ID: base
+    Function: pkg.installed
+        Name: tree
+      Result: True
+     Comment: All specified packages are already installed
+     Started: 21:37:50.675919
+    Duration: 10.344 ms
+     Changes:   
+----------
+          ID: base
+    Function: file.managed
+        Name: /tmp/hellochoy
+      Result: True
+     Comment: File /tmp/hellochoy exists with proper permissions. No changes made.
+     Started: 21:37:50.686324
+    Duration: 1.247 ms
+     Changes:   
+
+Summary for local
+------------
+Succeeded: 6
+Failed:    0
+------------
+
+Testi ei tehnyt muutoksia, joten 'hellomulti' ja muut moduulit ovat idempotentteja.
 
 ## Lähteet
 
