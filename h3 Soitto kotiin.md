@@ -404,6 +404,11 @@ Luotiin hakemisto `mkdir saltdemo`.
 
 Luotiin hakemistoon Vagrantfile `edit Vagrantfile` komennolla. 
 
+
+Mennään 3
+
+
+
 Karvisen ohjeessa on valmis template 3 koneelle, mutta tehtävä vaati 2 konetta joten poistettiin templatesta t002 kone:
 
 ```
@@ -578,13 +583,64 @@ Bringing machine 'tmaster' up with 'virtualbox' provider...
 ==> tmaster: Vanilla Debian box. See https://app.vagrantup.com/debian for help and bug reports
 ```
 
+Tuloksesta näkyi, että salt ei ole asennettu.
+
+Luotiin hakemisto `sudo mkdir saltrepo/`.
+
+Asennettiin repot:
+
+```
+vagrant@tmaster:~/saltrepo$ wget https://packages.broadcom.com/artifactory/api/security/keypair/SaltProjectKey/public
+--2025-11-09 21:42:59--  https://packages.broadcom.com/artifactory/api/security/keypair/SaltProjectKey/public
+Resolving packages.broadcom.com (packages.broadcom.com)... 54.185.186.5, 44.226.59.123, 100.21.156.46
+Connecting to packages.broadcom.com (packages.broadcom.com)|54.185.186.5|:443... connected.
+HTTP request sent, awaiting response... 200
+Length: unspecified [application/json]
+Saving to: ‘public’
+
+public                            [ <=>                                              ]   2.42K  --.-KB/s    in 0s
+
+2025-11-09 21:43:00 (75.2 MB/s) - ‘public’ saved [2475]
+
+vagrant@tmaster:~/saltrepo$ wget https://github.com/saltstack/salt-install-guide/releases/latest/download/salt.sources
+--2025-11-09 21:43:10--  https://github.com/saltstack/salt-install-guide/releases/latest/download/salt.sources
+Resolving github.com (github.com)... 140.82.121.3
+Connecting to github.com (github.com)|140.82.121.3|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://github.com/saltstack/salt-install-guide/releases/download/v1.16.0/salt.sources [following]
+--2025-11-09 21:43:10--  https://github.com/saltstack/salt-install-guide/releases/download/v1.16.0/salt.sources
+Reusing existing connection to github.com:443.
+HTTP request sent, awaiting response... 302 Found
+Location: https://release-assets.githubusercontent.com/github-production-release-asset/876954320/d01c8ad2-de05-4b28-86ed-73b732ea1d7f?sp=r&sv=2018-11-09&sr=b&spr=https&se=2025-11-09T22%3A36%3A56Z&rscd=attachment%3B+filename%3Dsalt.sources&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2025-11-09T21%3A36%3A08Z&ske=2025-11-09T22%3A36%3A56Z&sks=b&skv=2018-11-09&sig=7myqzSxv8CqBKQ5Dl2ZYBBQsJ5CYMhrk9U7ugYYZVqU%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc2MjcyNDg5MCwibmJmIjoxNzYyNzI0NTkwLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.yaZ9lj83CFS_NhDaUdPhowI8Y-lRqHDLshInUgh8BC4&response-content-disposition=attachment%3B%20filename%3Dsalt.sources&response-content-type=application%2Foctet-stream [following]
+--2025-11-09 21:43:10--  https://release-assets.githubusercontent.com/github-production-release-asset/876954320/d01c8ad2-de05-4b28-86ed-73b732ea1d7f?sp=r&sv=2018-11-09&sr=b&spr=https&se=2025-11-09T22%3A36%3A56Z&rscd=attachment%3B+filename%3Dsalt.sources&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2025-11-09T21%3A36%3A08Z&ske=2025-11-09T22%3A36%3A56Z&sks=b&skv=2018-11-09&sig=7myqzSxv8CqBKQ5Dl2ZYBBQsJ5CYMhrk9U7ugYYZVqU%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc2MjcyNDg5MCwibmJmIjoxNzYyNzI0NTkwLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.yaZ9lj83CFS_NhDaUdPhowI8Y-lRqHDLshInUgh8BC4&response-content-disposition=attachment%3B%20filename%3Dsalt.sources&response-content-type=application%2Foctet-stream
+Resolving release-assets.githubusercontent.com (release-assets.githubusercontent.com)... 185.199.110.133, 185.199.109.133, 185.199.108.133, ...
+Connecting to release-assets.githubusercontent.com (release-assets.githubusercontent.com)|185.199.110.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 717 [application/octet-stream]
+Saving to: ‘salt.sources’
+
+salt.sources                  100%[=================================================>]     717  --.-KB/s    in 0s
+
+2025-11-09 21:43:10 (97.5 MB/s) - ‘salt.sources’ saved [717/717]
+```
+
+Lisättiin salt avaimet:
+
+```
+sudo cp public /etc/apt/keyrings/salt-archive-keyring.pgp
+sudo cp salt.sources /etc/apt/sources.list.d/
+```
+Puuttui keyrings/ hakemisto joten luotiin se `sudo mkdir /etc/apt/keyrings/` ja kokeiltiin uudelleen onnistuneesti.
+
+Asennettiin salt-master `sudo apt-get install salt-master`.
+
+Toistettiin sama prosessi t001 koneelle mutta salt-minion asennus `sudo apt-get install salt-minion`.
+
+
+
 Mentiin tmaster terminaaliin `vagrant ssh tmaster`.
 
 Päästiin tmaster terminaaliin.
-
-Avaimia ei voitu avata salt-key komennolla eikä asentaa `sudo apt-get install salt-master` päivitysen jälkeen.
-
-Asennetaan salt-master tmaster koneelle.
 
 ## Lähteet
 
