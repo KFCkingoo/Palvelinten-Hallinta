@@ -2,7 +2,14 @@
 
 Tämä tehtäväraportti on tehty Tero Karvisen Palvelinten Hallinta-toteutuksen myötä.
 
-## x) 
+PC:
+Windows 11 Home, version 25H2
+
+AMD Ryzen 7 5700X3D
+
+16 GB RAM
+
+## x) Lue ja tiivistä
 
 ## a) Hello Vagrant!
 
@@ -109,7 +116,7 @@ Lähdettiin pois `exit` komennolla.
 Kokeiltiin poistaa VM `vagrant destroy` komennolla:
 
 ```
-default: Are you sure you want to destroy the 'default' VM? [y/N] y
+	default: Are you sure you want to destroy the 'default' VM? [y/N] y
 ==> default: Forcing shutdown of VM...
 ==> default: Destroying VM and associated drives...
 ```
@@ -380,12 +387,209 @@ Poistuttiin t002 koneelta `exit`.
 
 Koneet voivat pingata toisiaan.
 
+Poistettiin koneet `vagrant destroy`:
+
+```
+	t002: Are you sure you want to destroy the 't002' VM? [y/N] y
+==> t002: Forcing shutdown of VM...
+==> t002: Destroying VM and associated drives...
+    t001: Are you sure you want to destroy the 't001' VM? [y/N] y
+==> t001: Forcing shutdown of VM...
+==> t001: Destroying VM and associated drives...
+```
+
 ## d) Herra-orja verkossa
 
+Luotiin hakemisto `mkdir saltdemo`.
 
+Luotiin hakemistoon Vagrantfile `edit Vagrantfile` komennolla. 
+
+Karvisen ohjeessa on valmis template 3 koneelle, mutta tehtävä vaati 2 konetta joten poistettiin templatesta t002 kone:
+
+```
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+# Copyright 2014-2023 Tero Karvinen http://TeroKarvinen.com
+
+$minion = <<MINION
+sudo apt-get update
+sudo apt-get -qy install salt-minion
+echo "master: 192.168.12.3">/etc/salt/minion
+sudo service salt-minion restart
+echo "See also: https://terokarvinen.com/2023/salt-vagrant/"
+MINION
+
+$master = <<MASTER
+sudo apt-get update
+sudo apt-get -qy install salt-master
+echo "See also: https://terokarvinen.com/2023/salt-vagrant/"
+MASTER
+
+Vagrant.configure("2") do |config|
+	config.vm.box = "debian/bullseye64"
+
+	config.vm.define "t001" do |t001|
+		t001.vm.provision :shell, inline: $minion
+		t001.vm.network "private_network", ip: "192.168.12.100"
+		t001.vm.hostname = "t001"
+	end
+
+	config.vm.define "tmaster", primary: true do |tmaster|
+		tmaster.vm.provision :shell, inline: $master
+		tmaster.vm.network "private_network", ip: "192.168.12.3"
+		tmaster.vm.hostname = "tmaster"
+	end
+end
+```
+
+Käynnistettiin koneet `vagrant up`:
+
+```
+Bringing machine 't001' up with 'virtualbox' provider...
+Bringing machine 'tmaster' up with 'virtualbox' provider...
+==> t001: Importing base box 'debian/bullseye64'...
+==> t001: Matching MAC address for NAT networking...
+==> t001: Checking if box 'debian/bullseye64' version '11.20241217.1' is up to date...
+==> t001: Setting the name of the VM: saltdemo_t001_1762721532454_6961
+==> t001: Clearing any previously set network interfaces...
+==> t001: Preparing network interfaces based on configuration...
+    t001: Adapter 1: nat
+    t001: Adapter 2: hostonly
+==> t001: Forwarding ports...
+    t001: 22 (guest) => 2222 (host) (adapter 1)
+==> t001: Booting VM...
+==> t001: Waiting for machine to boot. This may take a few minutes...
+    t001: SSH address: 127.0.0.1:2222
+    t001: SSH username: vagrant
+    t001: SSH auth method: private key
+    t001:
+    t001: Vagrant insecure key detected. Vagrant will automatically replace
+    t001: this with a newly generated keypair for better security.
+    t001:
+    t001: Inserting generated public key within guest...
+    t001: Removing insecure key from the guest if it's present...
+    t001: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> t001: Machine booted and ready!
+==> t001: Checking for guest additions in VM...
+    t001: The guest additions on this VM do not match the installed version of
+    t001: VirtualBox! In most cases this is fine, but in rare cases it can
+    t001: prevent things such as shared folders from working properly. If you see
+    t001: shared folder errors, please make sure the guest additions within the
+    t001: virtual machine match the version of VirtualBox you have installed on
+    t001: your host and reload your VM.
+    t001:
+    t001: Guest Additions Version: 6.0.0 r127566
+    t001: VirtualBox Version: 7.2
+==> t001: Setting hostname...
+==> t001: Configuring and enabling network interfaces...
+==> t001: Mounting shared folders...
+    t001: C:/Users/vagrantProjects/saltdemo => /vagrant
+==> t001: Running provisioner: shell...
+    t001: Running: inline script
+    t001: Get:1 https://deb.debian.org/debian bullseye InRelease [75.1 kB]
+    t001: Get:2 https://security.debian.org/debian-security bullseye-security InRelease [27.2 kB]
+    t001: Get:3 https://deb.debian.org/debian bullseye-updates InRelease [44.0 kB]
+    t001: Get:4 https://security.debian.org/debian-security bullseye-security/main Sources [272 kB]
+    t001: Get:5 https://security.debian.org/debian-security bullseye-security/main amd64 Packages [422 kB]
+    t001: Get:6 https://security.debian.org/debian-security bullseye-security/main Translation-en [281 kB]
+    t001: Get:7 https://deb.debian.org/debian bullseye/main Sources [8500 kB]
+    t001: Get:8 https://deb.debian.org/debian bullseye/main amd64 Packages [8066 kB]
+    t001: Get:9 https://deb.debian.org/debian bullseye/main Translation-en [6235 kB]
+    t001: Get:10 https://deb.debian.org/debian bullseye-updates/main Sources [7908 B]
+    t001: Get:11 https://deb.debian.org/debian bullseye-updates/main amd64 Packages [18.8 kB]
+    t001: Get:12 https://deb.debian.org/debian bullseye-updates/main Translation-en [10.5 kB]
+    t001: Fetched 24.0 MB in 3s (8587 kB/s)
+    t001: Reading package lists...
+    t001: Reading package lists...
+    t001: Building dependency tree...
+    t001: Reading state information...
+    t001: E: Unable to locate package salt-minion
+    t001: /tmp/vagrant-shell: line 3: /etc/salt/minion: No such file or directory
+    t001: Failed to restart salt-minion.service: Unit salt-minion.service not found.
+    t001: See also: https://terokarvinen.com/2023/salt-vagrant/
+==> tmaster: Importing base box 'debian/bullseye64'...
+==> tmaster: Matching MAC address for NAT networking...
+==> tmaster: Checking if box 'debian/bullseye64' version '11.20241217.1' is up to date...
+==> tmaster: Setting the name of the VM: saltdemo_tmaster_1762721588834_2067
+==> tmaster: Fixed port collision for 22 => 2222. Now on port 2200.
+==> tmaster: Clearing any previously set network interfaces...
+==> tmaster: Preparing network interfaces based on configuration...
+    tmaster: Adapter 1: nat
+    tmaster: Adapter 2: hostonly
+==> tmaster: Forwarding ports...
+    tmaster: 22 (guest) => 2200 (host) (adapter 1)
+==> tmaster: Booting VM...
+==> tmaster: Waiting for machine to boot. This may take a few minutes...
+    tmaster: SSH address: 127.0.0.1:2200
+    tmaster: SSH username: vagrant
+    tmaster: SSH auth method: private key
+    tmaster:
+    tmaster: Vagrant insecure key detected. Vagrant will automatically replace
+    tmaster: this with a newly generated keypair for better security.
+    tmaster:
+    tmaster: Inserting generated public key within guest...
+    tmaster: Removing insecure key from the guest if it's present...
+    tmaster: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> tmaster: Machine booted and ready!
+==> tmaster: Checking for guest additions in VM...
+    tmaster: The guest additions on this VM do not match the installed version of
+    tmaster: VirtualBox! In most cases this is fine, but in rare cases it can
+    tmaster: prevent things such as shared folders from working properly. If you see
+    tmaster: shared folder errors, please make sure the guest additions within the
+    tmaster: virtual machine match the version of VirtualBox you have installed on
+    tmaster: your host and reload your VM.
+    tmaster:
+    tmaster: Guest Additions Version: 6.0.0 r127566
+    tmaster: VirtualBox Version: 7.2
+==> tmaster: Setting hostname...
+==> tmaster: Configuring and enabling network interfaces...
+==> tmaster: Mounting shared folders...
+    tmaster: C:/Users/vagrantProjects/saltdemo => /vagrant
+==> tmaster: Running provisioner: shell...
+    tmaster: Running: inline script
+    tmaster: Get:1 https://deb.debian.org/debian bullseye InRelease [75.1 kB]
+    tmaster: Get:2 https://security.debian.org/debian-security bullseye-security InRelease [27.2 kB]
+    tmaster: Get:3 https://deb.debian.org/debian bullseye-updates InRelease [44.0 kB]
+    tmaster: Get:4 https://security.debian.org/debian-security bullseye-security/main Sources [272 kB]
+    tmaster: Get:5 https://security.debian.org/debian-security bullseye-security/main amd64 Packages [422 kB]
+    tmaster: Get:6 https://security.debian.org/debian-security bullseye-security/main Translation-en [281 kB]
+    tmaster: Get:7 https://deb.debian.org/debian bullseye/main Sources [8500 kB]
+    tmaster: Get:8 https://deb.debian.org/debian bullseye/main amd64 Packages [8066 kB]
+    tmaster: Get:9 https://deb.debian.org/debian bullseye/main Translation-en [6235 kB]
+    tmaster: Get:10 https://deb.debian.org/debian bullseye-updates/main Sources [7908 B]
+    tmaster: Get:11 https://deb.debian.org/debian bullseye-updates/main amd64 Packages [18.8 kB]
+    tmaster: Get:12 https://deb.debian.org/debian bullseye-updates/main Translation-en [10.5 kB]
+    tmaster: Fetched 24.0 MB in 3s (9224 kB/s)
+    tmaster: Reading package lists...
+    tmaster: Reading package lists...
+    tmaster: Building dependency tree...
+    tmaster: Reading state information...
+    tmaster: E: Unable to locate package salt-master
+    tmaster: See also: https://terokarvinen.com/2023/salt-vagrant/
+
+==> t001: Machine 't001' has a post `vagrant up` message. This is a message
+==> t001: from the creator of the Vagrantfile, and not from Vagrant itself:
+==> t001:
+==> t001: Vanilla Debian box. See https://app.vagrantup.com/debian for help and bug reports
+
+==> tmaster: Machine 'tmaster' has a post `vagrant up` message. This is a message
+==> tmaster: from the creator of the Vagrantfile, and not from Vagrant itself:
+==> tmaster:
+==> tmaster: Vanilla Debian box. See https://app.vagrantup.com/debian for help and bug reports
+```
+
+Mentiin tmaster terminaaliin `vagrant ssh tmaster`.
+
+Päästiin tmaster terminaaliin.
+
+Avaimia ei voitu avata salt-key komennolla eikä asentaa `sudo apt-get install salt-master` päivitysen jälkeen.
+
+Asennetaan salt-master tmaster koneelle.
 
 ## Lähteet
 
 https://developer.hashicorp.com/vagrant/docs/cli/version
-https://terokarvinen.com/2021/two-machine-virtual-network-with-debian-11-bullseye-and-vagrant/
 https://terokarvinen.com/palvelinten-hallinta/#laksyt
+https://terokarvinen.com/2023/salt-vagrant/#infra-as-code---your-wishes-as-a-text-file
+https://terokarvinen.com/2021/two-machine-virtual-network-with-debian-11-bullseye-and-vagrant/
+
