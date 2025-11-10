@@ -537,12 +537,124 @@ base:
 	hellopkg
 ```
 
+Testattiin tilafunktiot ja tuli virhe:
 
+```
+choy:
+    Data failed to compile:
+----------
+    Malformed topfile (state declarations not formed as a list)
+----------
+    No matching sls found for 'hellouser hellofile hellopkg' in env 'base'
+ERROR: Minions returned with non-zero exit code
+```
+
+Puuttui ranskalaiset viivat listalta, korjattiin se `sudoedit /srv/salt/top.sls`:
+
+```
+base:
+  '*':
+    - hellouser
+	- hellofile
+	- hellopkg
+```
+
+Uudelleentestaus:
+
+choy:
+----------
+          ID: choykkely
+    Function: user.present
+      Result: True
+     Comment: New user choykkely created
+     Started: 00:58:13.129697
+    Duration: 46.925 ms
+     Changes:
+              ----------
+              fullname:
+              gid:
+                  1001
+              groups:
+                  - choykkely
+              home:
+                  /home/choykkely
+              homephone:
+              name:
+                  choykkely
+              other:
+              passwd:
+                  x
+              roomnumber:
+              shell:
+                  /bin/sh
+              uid:
+                  1001
+              workphone:
+----------
+          ID: /tmp/testii
+    Function: file.managed
+      Result: True
+     Comment: Empty file
+     Started: 00:58:13.177879
+    Duration: 6.166 ms
+     Changes:
+              ----------
+              new:
+                  file /tmp/testii created
+----------
+          ID: tree
+    Function: pkg.installed
+      Result: True
+     Comment: All specified packages are already installed
+     Started: 00:58:13.889105
+    Duration: 28.857 ms
+     Changes:
+
+Summary for choy
+------------
+Succeeded: 3 (changed=2)
+Failed:    0
+------------
+
+Testattiin idempotentti suorittamalla tilafunktiot uudelleen:
+
+choy:
+----------
+          ID: choykkely
+    Function: user.present
+      Result: True
+     Comment: User choykkely is present and up to date
+     Started: 00:59:31.648399
+    Duration: 34.061 ms
+     Changes:
+----------
+          ID: /tmp/testii
+    Function: file.managed
+      Result: True
+     Comment: File /tmp/testii exists with proper permissions. No changes made.
+     Started: 00:59:31.684275
+    Duration: 1.622 ms
+     Changes:
+----------
+          ID: tree
+    Function: pkg.installed
+      Result: True
+     Comment: All specified packages are already installed
+     Started: 00:59:32.395924
+    Duration: 26.037 ms
+     Changes:
+
+Summary for choy
+------------
+Succeeded: 3
+Failed:    0
+------------
+
+Tilafunktiot suorittivat toiminnot oikein ja muutoksia ei tehty idempotentin testauksessa.
 
 ## Lähteet
 
-https://developer.hashicorp.com/vagrant/docs/cli/version
-https://terokarvinen.com/palvelinten-hallinta/#laksyt
-https://terokarvinen.com/2023/salt-vagrant/#infra-as-code---your-wishes-as-a-text-file
-https://terokarvinen.com/2021/two-machine-virtual-network-with-debian-11-bullseye-and-vagrant/
+Karvinen, T. 2025. https://terokarvinen.com/palvelinten-hallinta/#laksyt
+Karvinen, T. 2023. https://terokarvinen.com/2023/salt-vagrant/#infra-as-code---your-wishes-as-a-text-file
+Karvinen, T. 2021. https://terokarvinen.com/2021/two-machine-virtual-network-with-debian-11-bullseye-and-vagrant/
 
