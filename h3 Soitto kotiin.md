@@ -434,7 +434,110 @@ Vagrant.configure("2") do |config|
 	
 end
 ```
-Mentiin tmaster terminaaliin ja asennettiin salt-master
+Mentiin t001 terminaaliin ja asennettiin salt-master.
+
+Saltille repo `mkdir saltrepo`.
+
+Repoon `cd saltrepo/`.
+
+Ladattiin 2 tiedostoa:
+```
+wget https://packages.broadcom.com/artifactory/api/security/keypair/SaltProjectKey/public
+wget https://github.com/saltstack/salt-install-guide/releases/latest/download/salt.sources
+```
+Komento `gpg --show-key --with-fingerprint public` ei toiminut, virheenä:
+
+>-bash: gpg: command not found
+
+Ohitettiin virhe ja jatkettiin saltin asennusta.
+
+Lisättiin avain `sudo cp public /etc/apt/keyrings/salt-archive-keyring.pgp`, tuli virhe:
+
+>cp: cannot create regular file '/etc/apt/keyrings/salt-archive-keyring.pgp': No such file or directory
+
+Luotiin hakemisto `sudo mkdir /etc/apt/keyrings/` ja uudelleenyritys onnistui.
+Jatkettiin salt avaimien lisäystä `sudo cp salt.sources /etc/apt/sources.list.d/`.
+
+Asennettiin t001 master salt `sudo apt-get install salt-master`.
+
+Poistuttiin `exit`.
+
+Tehtiin t002 minion salt samalla prosessilla.
+
+Tuli samoja virheitä, edettiin samalla prosessilla.
+
+Asennettiin t002 minion salt `sudo apt-get install salt-minion salt-master`.
+
+Tehtiin t002-koneelle avain `sudoedit /etc/salt/minion`, sinne lisättiin master ip ja id:
+
+```
+master: 192.168.88.101
+id: choy
+```
+
+Käynnistettiin minion uudelleen jotta muutokset tehtiin `sudoedit systemctl restart salt-minion.service`.
+
+Poistuttiin `exit`.
+
+Kirjauduttiin t001 master-koneelle `vagrant ssh t001`.
+
+Hyväksyttiin minion-avain `sudo salt-key -A`:
+
+```
+The following keys are going to be accepted:
+Unaccepted Keys:
+choy
+Proceed? [n/Y] y
+Key for minion choy accepted.
+```
+
+Testattiin, että master voi komentaa minionia `sudo salt '*' cmd.run 'whoami`:
+
+```
+choy:
+    root
+```
+
+t001 master-kone komensi minionia.
+
+## e) Kokeiluja verkon yli
+
+Luotiin kansiot moduuleja varten:
+
+```
+sudo mkdir -p /srv/salt/hellouser
+sudo mkdir -p /srv/salt/hellofile
+sudo mkdir -p /srv/salt/hellopkg
+```
+
+Annettiin tilafunktiot moduuleille esim. hellouser `sudoedit /srv/salt/hellouser/init.sls`:
+
+```
+choykkely:
+  user.present
+```
+
+```
+/tmp/testii:
+  file.managed
+```
+
+```
+tree:
+  pkg.installed
+```
+
+Tehtiin top file, jotta voidaan suorittaa kaikki tilat kerralla `sudoedit /srv/salt/top.sls`:
+
+```
+base:
+  '*':
+    hellouser
+	hellofile
+	hellopkg
+```
+
+
 
 ## Lähteet
 
