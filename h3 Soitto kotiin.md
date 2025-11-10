@@ -3,6 +3,7 @@
 Tämä tehtäväraportti on tehty Tero Karvisen Palvelinten Hallinta-toteutuksen myötä.
 
 PC:
+
 Windows 11 Home, version 25H2
 
 AMD Ryzen 7 5700X3D
@@ -10,6 +11,10 @@ AMD Ryzen 7 5700X3D
 16 GB RAM
 
 ## x) Lue ja tiivistä
+
+- Vagrantin asennus ja käyttö. Sen kautta voi luoda helposti virtuaalikoneiden ja ssh kirjautumisien automatisointia.
+- Saltilla voi ohjata useampia minion-koneita master-koneella.
+- Topfilen avulla voidaan suorittaa useita moduuleja. 
 
 ## a) Hello Vagrant!
 
@@ -94,20 +99,7 @@ or on a per folder basis within the Vagrantfile:
 ==> default: Vanilla Debian box. See https://app.vagrantup.com/debian for help and bug reports
 ```
 
-Mentiin kyseiseen Linux-VM terminaalille `vagrant ssh`:
-
-````
-Linux bookworm 6.1.0-29-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.123-1 (2025-01-02) x86_64
-
-The programs included with the Debian GNU/Linux system are free software;
-the exact distribution terms for each program are described in the
-individual files in /usr/share/doc/*/copyright.
-
-Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
-permitted by applicable law.
-````
-
-Päästiin terminaalille:
+Mentiin kyseiseen Linux-VM terminaalille `vagrant ssh`.
 
 <img width="259" height="33" alt="Näyttökuva (46)" src="https://github.com/user-attachments/assets/850d00ce-ad08-4490-a761-1d4bc70ebb02" />
 
@@ -125,9 +117,11 @@ Linux-virtuaalikone ja sen tiedostot poistettiin.
 
 ## c) Kaksin kaunihimpi
 
-Koska Windowsissa ei ole nano-tekstieditoria, käytettiin Microsoft Edit-tekstieditoria tehtävässä. 
+Koska Windowsissa ei ole nano-tekstieditoria, käytettiin Microsoft Edit-tekstieditoria tehtävässä.
 
-Luotiin Vagrantfile ja asennettavat konfiguraatiot `edit Vagrantfile`:
+Luotiin hakemisto `mkdir twohost`.
+
+Luotiin sinne Vagrantfile ja asennettavat konfiguraatiot `edit Vagrantfile`, Karvisen ohjeessa template:
 
 ````
 # -*- mode: ruby -*-
@@ -400,9 +394,9 @@ Poistettiin koneet `vagrant destroy`:
 
 ## d) Herra-orja verkossa
 
-Käytettiin aikaisemman c) tehtävän hakemistoa twohost.
+Käytettiin edellisen tehtävän hakemistoa twohost.
 
-Luotiin hakemistoon Vagrantfile `edit Vagrantfile` komennolla, sinne lisättiin:
+Luotiin hakemistoon Vagrantfile `edit Vagrantfile` komennolla, sinne lisättiin Karvisen template:
 
 ```
 # -*- mode: ruby -*-
@@ -434,11 +428,12 @@ Vagrant.configure("2") do |config|
 	
 end
 ```
-Mentiin t001 terminaaliin ja asennettiin salt-master.
 
-Saltille repo `mkdir saltrepo`.
+Asennettiin Salt koneille seuraavilla prosesseilla.
 
-Repoon `cd saltrepo/`.
+Luotiin Saltille repo `mkdir saltrepo`.
+
+Mentiin repoon `cd saltrepo/`.
 
 Ladattiin 2 tiedostoa:
 ```
@@ -458,13 +453,13 @@ Lisättiin avain `sudo cp public /etc/apt/keyrings/salt-archive-keyring.pgp`, tu
 Luotiin hakemisto `sudo mkdir /etc/apt/keyrings/` ja uudelleenyritys onnistui.
 Jatkettiin salt avaimien lisäystä `sudo cp salt.sources /etc/apt/sources.list.d/`.
 
-Asennettiin t001 master salt `sudo apt-get install salt-master`.
+Asennettiin t001 master Salt `sudo apt-get install salt-master`.
 
 Poistuttiin `exit`.
 
-Tehtiin t002 minion salt samalla prosessilla.
+Tehtiin t002 minion Salt samalla prosessilla.
 
-Tuli samoja virheitä, edettiin samalla prosessilla.
+Tuli samoja virheitä ja edettiin samalla prosessilla.
 
 Asennettiin t002 minion salt `sudo apt-get install salt-minion salt-master`.
 
@@ -616,6 +611,8 @@ Succeeded: 3 (changed=2)
 Failed:    0
 ------------
 
+Tilafunktiot toimi ilman virheitä.
+
 Testattiin idempotentti suorittamalla tilafunktiot uudelleen:
 
 choy:
@@ -655,6 +652,8 @@ Tilafunktiot suorittivat toiminnot oikein ja muutoksia ei tehty idempotentin tes
 ## Lähteet
 
 Karvinen, T. 2025. https://terokarvinen.com/palvelinten-hallinta/#laksyt
+
 Karvinen, T. 2023. https://terokarvinen.com/2023/salt-vagrant/#infra-as-code---your-wishes-as-a-text-file
+
 Karvinen, T. 2021. https://terokarvinen.com/2021/two-machine-virtual-network-with-debian-11-bullseye-and-vagrant/
 
