@@ -9,7 +9,7 @@ Tämä raportti on tehty Tero Karvisen Palvelinten Hallinta-toteutuksen myötä 
 
 ## a) SSHouto. Lisää uusi portti, jossa SSHd kuuntelee.
 
-> Ohjeiden lukemisessa meni hieman sekaisin, joten tehtävän kulku voi olla yleistä monimutkaisempi ja sekavassa järjestyksessä.
+> Ohjeiden lukemisessa meni hieman sekaisin, joten tehtävän kulku voi olla yleistä monimutkaisempi ja sekavassa järjestyksessä. Etenkin raportin alussa, /etc/ssh/sshd_config tiedostoa ei olisi tarvittu tehdä.
 
 Asennettiin ssh `sudo apt -y install ssh`.
 
@@ -62,7 +62,7 @@ openssh-server:
 
 Testattiin ssh moduuli Saltilla `sudo salt '*' state.apply ssh`:
 
-choy:
+
 ----------
           ID: openssh-server
     Function: pkg.installed
@@ -72,7 +72,7 @@ choy:
     Duration: 82.131 ms
      Changes:   
 
-Summary for choy
+Summary
 ------------
 Succeeded: 1
 Failed:    0
@@ -88,7 +88,7 @@ Moduuli toimi, lisätään nyt lisää tilafunktioita ohjeita seuraten:
 
 Testattiin moduuli:
 
-choy:
+
 ----------
           ID: openssh-server
     Function: pkg.installed
@@ -106,7 +106,7 @@ choy:
     Duration: 4.82 ms
      Changes:   
 
-Summary for choy
+Summary
 ------------
 Succeeded: 1
 Failed:    1
@@ -118,14 +118,6 @@ Tehtiin kansioon asetustiedosto `sudoedit /srv/salt/ssh/sshd_config` ja muistett
 
 Testattiin muutos ja idempotentti:
 
-Summary for choy
-------------
-Succeeded: 2 (changed=1)
-Failed:    0
-------------
-
-
-choy:
 ----------
           ID: openssh-server
     Function: pkg.installed
@@ -143,15 +135,15 @@ choy:
     Duration: 10.004 ms
      Changes:   
 
-Summary for choy
+Summary 
 ------------
 Succeeded: 2
 Failed:    0
 ------------
 
-Moduuli Saltilla toimi oikein, se lisäsi sshd_config asetustiedoston kun sitä ei ollut eikä tehnyt muutoksia kun oli olemassa.
+Moduuli Saltilla toimi oikein, se lisäsi sshd_config asetustiedoston kun sitä ei ollut eikä tehnyt muutoksia kun se oli olemassa.
 
-Mutta koska tehtiin uusi sshd_config ja lisättiin pelkästään Port 22 ja 1234, varsinainen asetustiedostosta /etc/ssh/sshd_config poistettiin kaikki asetukset ja siinä luki vai Port 22 ja 1234.
+Mutta koska tehtiin uusi sshd_config ja lisättiin pelkästään Port 22 ja 1234, asetustiedostosta /etc/ssh/sshd_config poistettiin kaikki asetukset ja siinä luki vain Port 22 ja 1234.
 
 Poistettiin openssh-server `sudo apt remove --purge openssh-server` ja asennettiin se uudestaan, jotta saatiin oletus asetustiedosto.
 
@@ -161,7 +153,7 @@ Kopioitiin Tero Karvisen esimerkki asetukset Saltin /srv/salt/ssh/sshd_config as
 
 <img width="461" height="600" alt="srv config" src="https://github.com/user-attachments/assets/bac7cb48-b2d7-41ed-a8ec-6167a286e7dd" />
 
-Lisättiin seurantaominaisuus ssh moduulille, moduulin pitäisi käynnistää ssh automaattisesti mikäli se ei ollut päällä:
+Lisättiin seurantaominaisuus ssh-moduulille, moduulin pitäisi käynnistää ssh-daemoni automaattisesti mikäli se ei ollut päällä:
 
 ```
 ssh:
@@ -172,7 +164,7 @@ ssh:
 
 Testattiin moduuli:
 
-choy:
+
 ----------
           ID: openssh-server
     Function: pkg.installed
@@ -207,18 +199,18 @@ choy:
               ssh:
                   True
 
-Summary for choy
+Summary
 ------------
 Succeeded: 3 (changed=2)
 Failed:    0
 ------------
 
 
-Moduuli toimi halutulla tavalla ja openssh-server oli jo asennettu valmiiksi aikaisempien testauksien takia ennen sshd_config tiedoston lopullista muutosta, daemoni käynnistyi päälle. 
+Moduuli toimi halutulla tavalla ja openssh-server oli jo asennettu valmiiksi aikaisempien testauksien takia ennen sshd_config tiedoston lopullista muutosta, daemoni käynnistyi myös päälle. 
 
 Testattiin idempotentti:
 
-choy:
+
 ----------
           ID: openssh-server
     Function: pkg.installed
@@ -244,7 +236,7 @@ choy:
     Duration: 46.652 ms
      Changes:   
 
-Summary for choy
+Summary
 ------------
 Succeeded: 3
 Failed:    0
@@ -254,7 +246,7 @@ Ei tehnyt muutoksia, moduuli on idempotentti ja ssh-daemoni pysyi päällä eik�
 
 Testattiin vielä, että moduuli osasi lisätä sshd_config tiedoston /etc/ssh/ kansioon jos se poistettiin:
 
-choy:
+
 ----------
           ID: openssh-server
     Function: pkg.installed
@@ -288,7 +280,7 @@ choy:
               ssh:
                   True
 
-Summary for choy
+Summary
 ------------
 Succeeded: 3 (changed=2)
 Failed:    0
@@ -325,6 +317,13 @@ Permission denied, please try again.
 foo@localhost: Permission denied (publickey,password).
 ```
 
+Tarkistettua käyttäjää, kyseistä foo käyttäjää ei olekaan luotu.
+
+Tärkeää on kuitenkin, että yhteys toimi `nc -vz localhost 1234`:
+
+```
+Connection to localhost (::1) 1234 port [tcp/*] succeeded!
+```
 
 ## Lähteet
 
