@@ -319,7 +319,7 @@ foo@localhost: Permission denied (publickey,password).
 
 Tarkistettua käyttäjää, kyseistä foo käyttäjää ei olekaan luotu.
 
-Tärkeää on kuitenkin, että yhteys toimi `nc -vz localhost 1234`:
+Tärkeää on kuitenkin, että yhteys toimi ja suorittaa tilan minioniin `nc -vz localhost 1234`:
 
 ```
 Connection to localhost (::1) 1234 port [tcp/*] succeeded!
@@ -332,5 +332,3 @@ Ucartz 2025. How to Install and Use netcat Command on Linux? https://www.ucartz.
 Tero Karvinen 2025. Palvelinten Hallinta. Tehtävänanto h4 Pkg-file-service. https://terokarvinen.com/palvelinten-hallinta/#laksyt
 
 Tero Karvinen 2018. Pkg-File-Service – Control Daemons with Salt – Change SSH Server Port. https://terokarvinen.com/2018/04/03/pkg-file-service-control-daemons-with-salt-change-ssh-server-port/?fromSearch=karvinen%20salt%20ssh
-
-
