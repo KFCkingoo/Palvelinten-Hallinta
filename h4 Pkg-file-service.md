@@ -2,7 +2,7 @@
 
 Tämä raportti on tehty Tero Karvisen Palvelinten Hallinta-toteutuksen myötä syksyllä 2025.
 
-## Tiivistelmä
+## x) Lue ja tiivistä
 
 - Daemonien eli taustapalvelujen hallinta Saltilla.
 - pkg-file-service asentaa ohjelman, korvaa tiedoston ja uudelleenkäynnistää daemonit käyttämään määriteltyjä asetuksia.
