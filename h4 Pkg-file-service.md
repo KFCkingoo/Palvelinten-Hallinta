@@ -30,7 +30,7 @@ Connection to localhost (::1) 1234 port [tcp/*] succeeded!
 
 Portti kykeni kuuntelemaan.
 
-Kokeiltiin kirjautua porttiin `ssh -p 1234 foo@localhost`, mutta pääsy oli kielletty:
+Kokeiltiin kirjautua porttiin `ssh -p 1234 t002@localhost`, mutta pääsy oli kielletty. Kuitenkin saatiin ssh yhteys, sillä se vastasi:
 
 ```
 Permission denied, please try again.
@@ -288,7 +288,7 @@ Failed:    0
 
 Ajettuaan tilan, moduuli loi sshd_config tiedoston ja ssh-daemoni käynnistettiin uudelleen.
 
-Yritettiin yhdistää käyttäjänä porttiin 1234 jos se nyt toimisi oikein `ssh -p 1234 foo@localhost`:
+Yritettiin yhdistää käyttäjänä porttiin 1234 jos se nyt toimisi oikein `ssh -p 1234 t002@localhost`:
 
 ```
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -314,10 +314,9 @@ Kokeiltiin kirjautua uudelleen ja tuli samat ongelmat kuin aikaisemmin raportin 
 
 ```
 Permission denied, please try again.
-foo@localhost: Permission denied (publickey,password).
+t002@localhost: Permission denied (publickey,password).
 ```
 
-Tarkistettua käyttäjää, kyseistä foo käyttäjää ei olekaan luotu.
 
 Tärkeää on kuitenkin, että yhteys toimi ja suorittaa tilan minioniin `nc -vz localhost 1234`:
 
