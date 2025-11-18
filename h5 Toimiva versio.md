@@ -81,6 +81,11 @@ Tarkistettiin tila:
 
 Tero Karvisen hakemistosta ajettiin Salt-tila omasta reposta.
 
+Ajettiin myös oma Salt-tila snow-reposta:
+
+<img width="917" height="675" alt="VirtualBox_DebianTeroKarvinenCom_18_11_2025_14_38_22" src="https://github.com/user-attachments/assets/97cbdda2-c879-43ac-a24c-3e64c2b98a46" />
+
+
 ## Lähteet
 
 Chacon, S. & Straub, B. 2014. Pro Git. 2. painos. Git. E-kirja. https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F
