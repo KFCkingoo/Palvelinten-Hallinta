@@ -81,9 +81,43 @@ Tarkistettiin tila:
 
 Tero Karvisen hakemistosta ajettiin Salt-tila omasta reposta.
 
-Ajettiin myös oma Salt-tila snow-reposta:
+Ajettiin myös edellisen raporttia varten tehty oma Salt-tila snow-reposta:
 
 <img width="917" height="675" alt="VirtualBox_DebianTeroKarvinenCom_18_11_2025_14_38_22" src="https://github.com/user-attachments/assets/97cbdda2-c879-43ac-a24c-3e64c2b98a46" />
+
+Tehtiin myös snow-repoon tilafunktiot ja ajettiin Salt-tila  `sudo salt-call --local --file-root snow/create/salt/ state.apply`:
+
+local:
+----------
+          ID: tree
+    Function: pkg.installed
+      Result: True
+     Comment: All specified packages are already installed
+     Started: 18:31:33.242330
+    Duration: 81.066 ms
+     Changes:   
+----------
+          ID: /tmp/u-can-del-me
+    Function: file.managed
+      Result: True
+     Comment: Empty file
+     Started: 18:31:33.324689
+    Duration: 1.473 ms
+     Changes:   
+              ----------
+              new:
+                  file /tmp/u-can-del-me created
+
+<img width="329" height="40" alt="VirtualBox_DebianTeroKarvinenCom_19_11_2025_18_38_24" src="https://github.com/user-attachments/assets/7fe6a5be-63f7-4fe5-8679-33818938ab89" />
+                  
+
+Summary for local
+------------
+Succeeded: 2 (changed=1)
+Failed:    0
+------------
+
+
 
 
 ## Lähteet
